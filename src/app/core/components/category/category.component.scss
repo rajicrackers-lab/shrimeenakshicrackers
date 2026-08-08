@@ -1,0 +1,14 @@
+
+.category-container{
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: auto;
+  // scrollbar-width: none;
+  position: relative;
+}
+.category>*{
+  user-select: none;
+}
+.inner{
+  border-radius: 30px;
+}

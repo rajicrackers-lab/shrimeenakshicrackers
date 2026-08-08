@@ -1,0 +1,118 @@
+<ng-container *ngIf="!isLoading;else splash">
+  <mat-drawer-container class="example-container" autosize>
+    <mat-sidenav #drawer position="end" [ngStyle]="{'min-width':'500px','z-index':'101'}" ngStyle.lt-md="min-width:100%" mode="over"  (backdropClick)="onClose()"
+    class="example-sidenav" [fixedInViewport]="true">
+    <mat-icon style="position: absolute;right: 5px;top: 5px;cursor: pointer;" (click)="onClose()">close</mat-icon>
+    <ng-container *ngIf="selectedItems && selectedItems.length>0;else noproduct">      
+      <h2 style="margin-left: 10px;">Items in Your Cart :</h2>
+      <div style="height: 70vh;overflow-y: scroll;padding-bottom: 20px;">
+      <div fxLayout="row" class="bill-item" *ngFor="let item of selectedItems" fxLayoutAlign="center center">
+        <div fxFlex="30%" style="padding: 10px;">
+          <img width="100%" [src]="item.imageUrl" height="100px" style="object-fit: contain;" onerror="this.src='../../../../assets/no-image.png'" alt="Crackers">
+        </div>
+          <span fxFlex="20%">{{ item.name }}</span>
+        <span fxFlex="10%"> ⨯ </span>
+        <span fxFlex="20%">{{ item.quantity }}</span>
+        <span fxFlex="10%"> = </span>
+        <span fxFlex="20%">{{(item.price - getDiscountPrice(item.price))*item.quantity | currency:'INR' }}</span>
+      </div>
+      <div style="position: sticky; bottom: -21px; background-color: #fff;">
+        <div fxLayoutAlign="center center">
+          <mat-divider style="width: 80%;"></mat-divider>
+        </div>
+        <div style="color: var(--primary-color);text-align: right;padding: 20px;" *ngIf="couponAmount">
+          <span>Coupon Applied : </span>
+          <span>{{' -'+couponAmount | currency :'INR'}}</span>
+        </div>
+        <div style="color: var(--primary-color);text-align: right;padding: 20px;" *ngIf="isOffer">
+          <span>Special Offer:</span>
+          <span>{{'-'+designDetail?.offerAmount | currency:'INR'}}</span>
+        </div>
+        <div class="total" style="text-align: right;padding: 20px;">
+          <span>Total : </span>
+          <span>{{isOffer?( ((totalPrice - designDetail?.offerAmount) - couponAmount)| currency:'INR'):(totalPrice - couponAmount) | currency:'INR'}}</span>
+        </div>
+      </div>
+    </div>
+    <div fxLayoutAlign="center center" fxLayout="column" fxLayoutGap="12px">
+      <!-- <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center center" *ngIf="totalPrice >= 3000">
+        <mat-form-field fxFlex="70%" appearance="outline" subscriptSizing="dynamic">
+          <input matInput placeholder="Enter coupon code">
+        </mat-form-field>
+        <button style="background: var(--primary-color);" fxFlex="30%" mat-raised-button>Apply</button>
+      </div> -->
+      <!-- <button id="place-order" (click)="onOrder()">
+        Place Order
+      </button> -->
+    </div>
+    </ng-container>
+  </mat-sidenav>
+  <app-discount [designDetail]="designDetail" style="position: sticky;top: 0;z-index: 11;"></app-discount>
+  <app-banner [designDetail]="designDetail"></app-banner>
+  <app-quotes></app-quotes>
+  <app-middle></app-middle>
+  <app-youtube *ngIf="designDetail && designDetail.showVideoSection" [designDetail]="designDetail"></app-youtube>
+  <!-- <app-category></app-category> -->
+  <app-carousel></app-carousel>
+  <app-products  [designDetail]="designDetail" (emitDrawer)="showSelectedProduct($event)"></app-products>
+  <app-disclaimer></app-disclaimer>
+  <app-footer [designDetail]="designDetail"></app-footer>
+</mat-drawer-container>
+</ng-container>
+
+<ng-template #splash>
+  <div class="container" style="height: 100vh;overflow: hidden;background-color: white;" fxLayoutAlign="center center">
+<div class="mat-elevation-z8" style="height: 100px;width: 100px;padding: 10px;" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px">
+<img style="height: 100%;" src="../../../../assets/loading.jpg"  alt="Crackers">
+<div class="loader"></div>
+</div>
+  </div>
+</ng-template>
+
+<ng-template #dialogTemplate>
+  <div style="padding: 10px;">
+    <app-form (formSubmitted)="onPlaceOrder($event)"></app-form>
+  </div>
+</ng-template>
+
+<ng-template #success>
+  <div class="success-animation" fxLayout="column" fxLayoutAlign="center center">
+    <ng-container *ngIf="status === 'success'">
+      <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52"><circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" /><path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" /></svg>
+    </ng-container>
+    <ng-container *ngIf="status === 'failed'">
+     <svg height="32" style="overflow:visible;enable-background:new 0 0 32 32" viewBox="0 0 32 32" width="32" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g><g id="Incorrect_Symbol_1_"><g id="Incorrect_Symbol"><circle cx="16" cy="16" id="BG" r="16" style="fill:#FF3939;"/><polygon id="Cross_x5F_Symbol" points="24,10.1 21.9,8 16,13.9 10.1,8 8,10.1         13.9,16 8,21.9 10.1,24 16,18.1 21.9,24 24,21.9 18.1,16 " style="fill:#E6E6E6;"/></g></g></g></svg>
+    </ng-container>
+    
+    <h2>{{status === 'success' 
+      ? 'Order placed' 
+      : status === 'failed' 
+      ? 'Order failed' 
+      : 'Processing order'}}</h2>
+    <span *ngIf="status==='success'">We will contact you soon</span>
+  </div>
+</ng-template>
+
+<ng-template #noproduct>
+  <div fxLayoutAlign="center center" fxLayout="column" fxLayoutGap="12px">
+    <img width="80%" src="../../../../assets/notincart.webp" alt="">
+    <h2>No product added in cart</h2>
+  </div>
+</ng-template>
+
+<!-- <div class="loader">
+  <ng-lottie [options]="options">
+  </ng-lottie>
+</div> -->
+
+<div *ngIf="isErrorScreen" class="err-screen">
+  <div fxLayout="column" fxLayoutAlign="center center" class="message-container" [ngStyle]="{'width':'50%'}"
+    [ngStyle.lt-md]="{'width':'90%'}">
+    <h2>Site is under maintanance 🧨</h2>
+    <p>Please contact admin</p>
+    <a fxLayout="row" fxLayoutGap="12px" fxLayoutAlign="center center" href="https://wa.me/918667585292?text=I%20wish%20to%20order" target="_blank">
+      <img src="../../../../assets/WhatsApp_icon.png" height="50px" alt="whatsapp">
+      <span>8667585292</span>
+    </a>
+  </div>
+</div>

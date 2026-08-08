@@ -1,0 +1,154 @@
+
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '@angular/material' as mat;
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Gravitas+One&family=Monoton&family=Pacifico&family=Permanent+Marker&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$maahi-crackers-primary: mat.define-palette(mat.$indigo-palette);
+$maahi-crackers-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$maahi-crackers-warn: mat.define-palette(mat.$red-palette);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$maahi-crackers-theme: mat.define-light-theme((
+  color: (
+    primary: $maahi-crackers-primary,
+    accent: $maahi-crackers-accent,
+    warn: $maahi-crackers-warn,
+  ),
+  typography: mat.define-typography-config(),
+  density: 0
+));
+:root{
+  --primary-color: #4caf4f;
+  --secondary-color: #b3dbb4;
+}
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-component-themes($maahi-crackers-theme);
+
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;}
+a{
+    text-decoration: none;
+    color: inherit;
+}
+.hideScroll::-webkit-scrollbar{
+  display: none;
+}
+.success-animation { margin:70px auto;}
+
+.checkmark {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    display: block;
+    stroke-width: 2;
+    stroke: var(--primary-color);
+    stroke-miterlimit: 10;
+    box-shadow: inset 0px 0px 0px var(--primary-color);
+    animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+    position:relative;
+    top: 5px;
+    right: 5px;
+   margin: 0 auto;
+}
+.checkmark__circle {
+    stroke-dasharray: 166;
+    stroke-dashoffset: 166;
+    stroke-width: 2;
+    stroke-miterlimit: 10;
+    stroke: var(--primary-color);
+    fill: #fff;
+    animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+ 
+}
+
+.checkmark__check {
+    transform-origin: 50% 50%;
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+}
+
+@keyframes stroke {
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes scale {
+    0%, 100% {
+        transform: none;
+    }
+
+    50% {
+        transform: scale3d(1.1, 1.1, 1);
+    }
+}
+
+@keyframes fill {
+    100% {
+        box-shadow: inset 0px 0px 0px 30px #4bb71b;
+    }
+}
+.ql-editor h1 {
+    font-size: 2em;
+    margin: 10px 0;
+  }
+  
+  .ql-editor h2 {
+    font-size: 1.5em;
+    margin: 8px 0;
+  }
+  
+  .ql-editor h3 {
+    font-size: 1.2em;
+    margin: 6px 0;
+  }
+  
+  /* Ensure text size settings from Quill are applied */
+  .ql-size-small {
+    font-size: 0.75em;
+  }
+  
+  .ql-size-large {
+    font-size: 1.5em;
+  }
+  
+  .ql-size-huge {
+    font-size: 2em;
+  }
+  
+  /* Ensure alignment works */
+  .ql-align-center {
+    text-align: center;
+  }
+  
+  .ql-align-right {
+    text-align: right;
+  }
+  
+  .ql-align-justify {
+    text-align: justify;
+  }
+  
+  /* Text stroke (if applied) */
+  .text-stroke {
+    -webkit-text-stroke: 1px black;
+    color: white;
+  }

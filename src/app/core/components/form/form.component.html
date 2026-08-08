@@ -1,0 +1,54 @@
+<div class="contact-container" fxLayout="row">
+    <form [formGroup]="contactForm" class="left-box" style="width: 100%;" fxLayout="column">
+      <h2 style="color: var(--primary-color);">
+        Enter your address to order:</h2>
+      <mat-form-field appearance="outline">
+        <mat-label>Name</mat-label>
+        <input matInput placeholder="Name" formControlName="name">
+      </mat-form-field>
+      <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="5px" fxLayoutGap.lt-md="0px">
+        <mat-form-field appearance="outline" fxFlex="60%" fxFlex.lt-md="100%">
+          <mat-label>Email</mat-label>
+          <input matInput placeholder="Email" formControlName="email">
+          <mat-error *ngIf="contactForm.get('email')?.hasError('required')">*This field is required</mat-error>
+          <mat-error *ngIf="contactForm.get('email')?.hasError('email')">*Enter a valid email</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" fxFlex="40%" fxFlex.lt-md="100%">
+          <mat-label>Phone no</mat-label>
+          <input matInput placeholder="Enter 10 digit mobile number" formControlName="phone">
+          <mat-error *ngIf="contactForm.get('phone')?.hasError('required')">*This field is required</mat-error>
+          <mat-error *ngIf="contactForm.get('phone')?.hasError('pattern')">Enter valid phone number</mat-error>
+        </mat-form-field>
+      </div>
+      <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="5px" fxLayoutGap.lt-md="0px">
+        <mat-form-field appearance="outline" fxFlex="50%" fxFlex.lt-md="100%">
+          <mat-label>Select state</mat-label>
+          <mat-select formControlName="state" placeholder="Select state">
+            @for (state of states; track $index) {
+              <mat-option [value]="state.value">{{state.name}}</mat-option>
+            }
+          </mat-select>
+          <mat-error *ngIf="contactForm.get('state')?.hasError('required')">*This field is required</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" fxFlex="50%" fxFlex.lt-md="100%">
+          <mat-label>Select city</mat-label>
+          <mat-select formControlName="district" placeholder="Select City">
+            @for (city of district[contactForm.get('state')?.value]; track city) {
+              <mat-option [value]="city">{{city}}</mat-option>
+            }
+          </mat-select>
+          <mat-error *ngIf="contactForm.get('district')?.hasError('required')">*This field is required</mat-error>
+        </mat-form-field>
+      </div>
+      <mat-form-field appearance="outline">
+        <mat-label>Address</mat-label>
+        <textarea matInput placeholder="Enter your address" formControlName="address"></textarea>
+        <mat-error *ngIf="contactForm.get('address')?.hasError('required')">*This field is required</mat-error>
+      </mat-form-field>
+      <button id="place-order" (click)="contactSubmit()" [disabled]="isSubmitted">
+        Place Order
+        <!-- <mat-icon matSuffix>send</mat-icon> -->
+        <i class="fa fa-spinner fa-spin" *ngIf="contactLoading"></i>
+      </button>
+    </form>
+</div>

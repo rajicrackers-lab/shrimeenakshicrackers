@@ -1,0 +1,8 @@
+.container{
+  padding: 24px;
+  .box{
+    padding: 12px;
+    border: 1px solid var(--primary-color);
+    background-color: var(--secondary-color);
+  }
+}

@@ -1,0 +1,36 @@
+.quotes-container{
+  position: relative;
+  min-height: 30vh;
+  font-weight: bold;
+  text-align: center;
+  padding: 24px;
+  h2{
+    z-index: 2;
+    font-size: 24px;
+  }
+}
+.side-img{
+  position: absolute;
+  top: 20px;
+  height: 200px;
+ &.rocket{
+  right: 80px;
+  transform: scaleX(-1)
+ }
+ &.flowerpot{
+  right: 0;
+ }
+ &.light{
+  left: 60px;
+ }
+}
+@media only screen and (max-width: 500px) {
+  h2 {
+    font-size: 15px !important; /* Font size for screens 500px or less */
+  }
+}
+@media (max-width: 959px) {
+  .side-img {
+    position: static !important;
+  }
+}

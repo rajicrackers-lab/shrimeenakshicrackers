@@ -1,0 +1,30 @@
+
+.footer-letter {
+  img {
+    height: 50px;
+  }
+}
+
+.footer {
+  position: relative;
+  min-height: 40vh;
+  padding-block: 10px;
+  background-color: #1d1d1d;
+}
+.brand{
+  font-family: "Gravitas One", serif;
+  font-size: clamp(1.5rem, 5vw, 40px);
+  color: white;
+  text-transform: uppercase;
+  word-break: break-word;
+}
+.box{
+  color: white;
+  max-width: 100%;
+}
+.footer-title{
+  font-size: 15px;
+  font-weight: bold;
+  width: 100%;
+  word-break: break-word;
+}
