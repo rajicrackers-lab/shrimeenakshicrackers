@@ -6,12 +6,14 @@ import { ProductsComponent } from '../../components/products/products.component'
 import { CommonService } from '../../services/common.service';
 import { fromEvent, Subject, takeUntil } from 'rxjs';
 
+import { FormComponent } from '../../components/form/form.component';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
+  @ViewChild(FormComponent) formComponent!: FormComponent;
   selectedItems!: any[];
   totalPrice: any;
   isOffer = false;
@@ -154,6 +156,7 @@ export class HomeComponent {
         this.selectedItems = []
         this.totalPrice = 0;
         this.productComponent.resetAll();
+        this.formComponent?.resetForm();
       })
     }).catch((err) => {
       this.status = 'failed'

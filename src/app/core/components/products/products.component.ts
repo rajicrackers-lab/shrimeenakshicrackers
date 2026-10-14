@@ -7,6 +7,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { CommonService } from '../../services/common.service';
 import { FormControl } from '@angular/forms';
 import { environment } from '../../../../environments/environment';
+import { FormComponent } from '../form/form.component';
 export interface Cracker {
   id: number;
   name: string;
@@ -22,6 +23,7 @@ export interface Cracker {
   styleUrl: './products.component.scss'
 })
 export class ProductsComponent {
+  @ViewChild(FormComponent) formComponent!: FormComponent;
   @Input('designDetail') designDetail: any;
   @Output() emitDrawer = new EventEmitter<any>();
   isOfferApplied = false;
@@ -232,6 +234,9 @@ export class ProductsComponent {
         this.totalPrice = 0;
         this.totalProfit = 0;
         this.resetAll();
+        if (this.formComponent) {
+          this.formComponent.resetForm();
+        }
         this.apiService.sendEmail(event).then(() => {
           // console.log();
         })

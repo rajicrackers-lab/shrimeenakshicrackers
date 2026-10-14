@@ -81,21 +81,28 @@ PY:["Puducherry", "Karaikal", "Mahe", "Yanam"]};
       createdAt: new FormControl(new Date())
     })
   }
-  contactSubmit() {
+  contactSubmit(event?: Event) {
+    if (event) {
+      event.preventDefault();
+    }
     if (this.contactForm.valid && this.contactForm.touched) {
-      this.isSubmitted=true;
-        this.formSubmitted.emit(this.contactForm.value)
-        this.isSubmitted=false
-        this.contactForm.reset();
-        this.contactForm.patchValue({state:'Tamil Nadu', createdAt:new Date(), status:'unpaid'});
-        Object.keys(this.contactForm.controls).forEach(key => {
-          this.contactForm.controls[key].setErrors(null);
-          this.contactForm.controls[key].markAsPristine();
-          this.contactForm.controls[key].markAsUntouched();
-        });
+      this.isSubmitted = true;
+      this.formSubmitted.emit(this.contactForm.value);
+      this.isSubmitted = false;
+      // Do NOT reset form here. Form will be reset via resetForm() when the order succeeds in the parent component.
+    } else {
+      this.contactForm.markAllAsTouched();
     }
-    else {
-      this.contactForm.markAllAsTouched()
-    }
+  }
+
+  resetForm() {
+    const defaultState = this.contactForm.get('state')?.value || 'TN';
+    this.contactForm.reset();
+    this.contactForm.patchValue({ state: defaultState, createdAt: new Date(), status: 'unpaid' });
+    Object.keys(this.contactForm.controls).forEach(key => {
+      this.contactForm.controls[key].setErrors(null);
+      this.contactForm.controls[key].markAsPristine();
+      this.contactForm.controls[key].markAsUntouched();
+    });
   }
 }
